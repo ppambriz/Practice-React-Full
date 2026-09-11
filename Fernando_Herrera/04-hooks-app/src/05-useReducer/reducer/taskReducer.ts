@@ -19,6 +19,15 @@ export type TaskAction =
 | { type: 'DELETE_TODO', payload: number }
 
 
+export const getTasksInitialState = (): TaskState => {
+    return {
+        todos: [],
+        completed: 0,
+        pending: 0,
+        length: 0,
+    }
+}
+
 export const taskReducer = ( state:TaskState, action:TaskAction ):TaskState => {
 
     switch( action.type ) {

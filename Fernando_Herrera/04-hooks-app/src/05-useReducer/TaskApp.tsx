@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 
 import { Plus, Trash2, Check } from 'lucide-react';
 
@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { getTasksInitialState, taskReducer } from './reducer/taskReducer';
 
 interface Todo {
   id: number;
@@ -14,21 +15,24 @@ interface Todo {
 }
 
 export const TasksApp = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  // const [todos, setTodos] = useState<Todo[]>([]);
   const [inputValue, setInputValue] = useState('');
+  const [state, dispatch] = useReducer(taskReducer, getTasksInitialState())
 
   const addTodo = () => {
     // console.log('Agregar tarea', inputValue);
     if (inputValue.length===0) return;
 
-    const newTodo: Todo = {
-      id: Date.now(),
-      text: inputValue.trim(),
-      completed: false,
-    }
+    dispatch({ type: 'ADD_TODO', payload: inputValue });
 
-    setTodos((prev) => [...prev, newTodo])
-    setTodos([...todos, newTodo]);
+    // const newTodo: Todo = {
+    //   id: Date.now(),
+    //   text: inputValue.trim(),
+    //   completed: false,
+    // }
+
+    // setTodos((prev) => [...prev, newTodo])
+    // setTodos([...todos, newTodo]);
 
     setInputValue('');
 
@@ -64,8 +68,10 @@ export const TasksApp = () => {
 
   };
 
-  const completedCount = todos.filter((todo) => todo.completed).length;
-  const totalCount = todos.length;
+  
+  const {todos, completed:completedCount, length:totalCount} = state;
+  // const completedCount = todos.filter((todo) => todo.completed).length;
+  // const totalCount = todos.length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4">
