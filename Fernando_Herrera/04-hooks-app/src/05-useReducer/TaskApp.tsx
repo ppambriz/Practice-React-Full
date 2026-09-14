@@ -1,29 +1,33 @@
-import { useReducer, useState } from 'react';
+import { useEffect, useReducer, useState } from "react";
 
-import { Plus, Trash2, Check } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getTasksInitialState, taskReducer } from "./reducer/taskReducer";
+import { Check, Plus, Trash2 } from "lucide-react";
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { getTasksInitialState, taskReducer } from './reducer/taskReducer';
-
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-}
+// interface Todo {
+//   id: number;
+//   text: string;
+//   completed: boolean;
+// }
 
 export const TasksApp = () => {
   // const [todos, setTodos] = useState<Todo[]>([]);
-  const [inputValue, setInputValue] = useState('');
-  const [state, dispatch] = useReducer(taskReducer, getTasksInitialState())
+  const [inputValue, setInputValue] = useState("");
+  const [state, dispatch] = useReducer(taskReducer, getTasksInitialState());
+
+  useEffect(() => {
+    // console.log({ state });
+    localStorage.setItem("tasks-state", JSON.stringify(state));
+  }, [state]);
 
   const addTodo = () => {
     // console.log('Agregar tarea', inputValue);
-    if (inputValue.length===0) return;
+    if (inputValue.length === 0) return;
 
-    dispatch({ type: 'ADD_TODO', payload: inputValue });
+    dispatch({ type: "ADD_TODO", payload: inputValue });
 
     // const newTodo: Todo = {
     //   id: Date.now(),
@@ -34,42 +38,41 @@ export const TasksApp = () => {
     // setTodos((prev) => [...prev, newTodo])
     // setTodos([...todos, newTodo]);
 
-    setInputValue('');
-
+    setInputValue("");
   };
 
   const toggleTodo = (id: number) => {
     // console.log('Cambiar de true a false', id);
-    const updatedtodos = todos.map( (todo) => {
-      if ( todo.id === id ) {
-        return { ...todo, completed: !todo.completed }
-      }
-      return todo;
-    });
-    
-    setTodos( (t) => t = updatedtodos);
+    // const updatedtodos = todos.map( (todo) => {
+    //   if ( todo.id === id ) {
+    //     return { ...todo, completed: !todo.completed }
+    //   }
+    //   return todo;
+    // });
+
+    // setTodos( (t) => t = updatedtodos);
+
+    dispatch({ type: "TOGGLE_TODO", payload: id });
   };
 
   const deleteTodo = (id: number) => {
     // console.log('Eliminar tarea', id);
-    const updatedTodo = todos.filter( (todo) => todo.id !== id);
-    setTodos((t) => t=updatedTodo);
+    // const updatedTodo = todos.filter( (todo) => todo.id !== id);
+    // setTodos((t) => t=updatedTodo);
 
+    dispatch({ type: "DELETE_TODO", payload: id });
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     // if ( inputValue.length===0) return;
     // console.log('Presiono enter');
-    console.log( { key: e.key } );
-    if ( e.key === 'Enter') {
+    // console.log({ key: e.key });
+    if (e.key === "Enter") {
       addTodo();
     }
-
-
   };
 
-  
-  const {todos, completed:completedCount, length:totalCount} = state;
+  const { todos, completed: completedCount, length: totalCount } = state;
   // const completedCount = todos.filter((todo) => todo.completed).length;
   // const totalCount = todos.length;
 
@@ -153,8 +156,8 @@ export const TasksApp = () => {
                     key={todo.id}
                     className={`flex items-center gap-3 p-3 rounded-lg border transition-all duration-200 ${
                       todo.completed
-                        ? 'bg-slate-50 border-slate-200'
-                        : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-sm'
+                        ? "bg-slate-50 border-slate-200"
+                        : "bg-white border-slate-200 hover:border-slate-300 hover:shadow-sm"
                     }`}
                   >
                     <Checkbox
@@ -165,8 +168,8 @@ export const TasksApp = () => {
                     <span
                       className={`flex-1 transition-all duration-200 ${
                         todo.completed
-                          ? 'text-slate-500 line-through'
-                          : 'text-slate-800'
+                          ? "text-slate-500 line-through"
+                          : "text-slate-800"
                       }`}
                     >
                       {todo.text}
