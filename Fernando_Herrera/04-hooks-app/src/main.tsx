@@ -14,7 +14,8 @@ import { Toaster } from 'sonner'
 // import { MemoHook } from "./06-memos/MemoHook";
 // import { MemoCounter } from "./06-memos/MemoCounter";
 // import { InstagromApp } from "./07-useOptimistic/InstagromApp";
-import { ClientInformation } from "./08-use-suspense/ClientInformation";
+// import { ClientInformation } from "./08-use-suspense/ClientInformation";
+import { ProfessionalApp } from "./09-useContext/ProfessionalApp";
 
 import "./index.css";
 
@@ -32,6 +33,7 @@ createRoot(document.getElementById("root")!).render(
     {/* <MemoHook /> */}
     {/* <MemoCounter /> */}
     {/* <InstagromApp /> */}
-    <ClientInformation />
+    {/* <ClientInformation /> */}
+    <ProfessionalApp />
   </StrictMode>,
 );
