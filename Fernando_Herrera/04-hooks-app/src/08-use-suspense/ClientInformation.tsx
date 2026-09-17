@@ -1,7 +1,7 @@
 
 
 
-export const ClientInformation = () => {
+export const ClientInformation = ({id}: { id: number}) => {
   return (
     <div className="bg-gradient flex flex-col gap-4">
         <h2 className="text-4xl font-thin text-white">
